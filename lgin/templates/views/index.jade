@@ -1,0 +1,76 @@
+extends ../layouts/default
+
+mixin post(post)
+	.post.post-container(data-ks-editable=editable(user, { list: 'Post', id: post.id }))
+		h3: a(href='/blog/post/' + post.slug)= post.title
+		p.text-muted #{post._.publishedDate.format('DD/MM/YYYY')} 
+			
+		if post.image.exists
+			img(src=post._.image.fit(160,160)).img.pull-right.img-blog
+		p!= post.content.brief
+		if post.content.extended
+			p.read-more: a(href='/blog/post/' + post.slug) Przeczytaj więcej...
+block intro
+	
+block content
+	.container: .row
+		.col-xs-12.col-md-8
+			h1= data.category ? data.category.name : 'Aktualności'
+			if filters.category && !data.category
+				h3.text-muted Invalid Category.
+			else
+				if data.posts.results.length
+					if data.posts.totalPages > 1
+						h4.text-weight-normal Posty od 
+							strong #{data.posts.first}
+							|  do 
+							strong #{data.posts.last}
+							|  ( wszystkich 
+							strong #{data.posts.total}
+							| )
+					else
+						h4.text-weight-normal Showing #{utils.plural(data.posts.results.length, '* post')}.
+					.blog
+						each post in data.posts.results
+							+post(post)
+					
+					if data.posts.totalPages > 1
+						ul.pagination
+							if data.posts.previous
+								li: a(href='?page=' + data.posts.previous): span.glyphicon.glyphicon-chevron-left
+							else
+								li.disabled: a(href='?page=' + 1): span.glyphicon.glyphicon-chevron-left
+							each p, i in data.posts.pages
+								li(class=data.posts.currentPage == p ? 'active' : null)
+									a(href='?page=' + (p == '...' ? (i ? data.posts.totalPages : 1) : p ))= p
+							if data.posts.next
+								li: a(href='?page=' + data.posts.next): span.glyphicon.glyphicon-chevron-right
+							else
+								li.disabled: a(href='?page=' + data.posts.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+				else
+					if data.category
+						h3.text-muted There are no posts in the category #{data.category.name}.
+					else
+						h3.text-muted There are no posts yet.
+		.col-xs-12.col-md-4
+			h1 Lgiń na Facebook'u
+			.facebook-container
+					iframe(src='https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FLgi%25C5%2584-450885954983964%2F%3Ffref%3Dts&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId', width='340', height='500', style='border:none;overflow:hidden', scrolling='no', frameborder='0', allowtransparency='true')
+			h1 Sołectwo w Lginiu
+			.text-weight-normal.bg-info
+				p: .h3
+					| Sołtys- Sabina Brambor
+				p: .h3
+					| Genowefa Wojdyła
+				p: .h3
+					| Grażyna Jędrzejczak
+				p: .h3
+					|	Bogdan Hetman
+				p: .h3
+					| Roman Jędrzychowski
+				p: .h3
+					| Jerzy Skorupiński
+			.row: .col-xs-12.col-md-12
+				img(src="images/klj.png", alt="Kraina Lasow i Jezior")
+				img(src="images/stanica.png", alt="Stanica Lgiń")
+				img(src="images/logo_ckir.png", alt="Centrum Kulturi i Rekreacji")

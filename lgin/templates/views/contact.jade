@@ -1,0 +1,34 @@
+extends ../layouts/default
+
+block intro
+	.container
+		h1 Skontaktuj się z nami 
+		
+block content
+	.container
+		if enquirySubmitted
+			h3 Dziękujemy za skontaktowanie się z nami.
+		else
+			.row: .col-sm-8.col-md-6
+				form(method='post')
+					input(type='hidden', name='action', value='contact')
+					.form-group(class=validationErrors.name ? 'has-error' : null)
+						label Imię
+						input(type='text', name='name.full', value=formData['name.full']).form-control
+					.form-group(class=validationErrors.email ? 'has-error' : null)
+						label Email
+						input(type='email', name='email', value=formData.email).form-control
+					.form-group
+						label Telefon
+						input(type='text', name='phone', value=formData.phone, placeholder='(opcjonalnie)').form-control
+					.form-group(class=validationErrors.enquiryType ? 'has-error' : null)
+						label Dlaczego się z nami kontaktujesz?
+						select(name='enquiryType').form-control
+							option(value='') (Wybierz jedną opcję)
+							each type in enquiryTypes
+								option(value=type.value, selected=formData.enquiryType == type.value)= type.label
+					.form-group(class=validationErrors.message ? 'has-error' : null)
+						label Wiadomość
+						textarea(name='message', placeholder='Zostaw nam wiadomość...' rows=4).form-control= formData.message
+					.form-actions
+						button(type='submit').btn.btn-primary Wyślij

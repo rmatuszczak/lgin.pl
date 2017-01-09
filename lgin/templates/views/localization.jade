@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block intro
+	.container: .row
+		.col-xs-12.col-md-4
+			h1 Lokalizacja
+			p.lead Lgiń położony jest w województwie lubuskim, w powiecie wschowskim, w gminie Wschowa, w
+				|pobliżu trasy drogi wojewódzkiej nr 305. Wieś jest siedzibą sołectwa, 
+				|w którego skład wchodzą również miejscowości Klucz i Mały Bór.
+			p.lead
+				|Miejscowość oddalona jest o 9 km w kierunku północno-zachodnim od Wschowy i położona nad dwoma jeziorami lgińskimi (Dużym i Małym). 
+				|Jeziora te otoczone są lasami i pagórkami morenowymi, mają urozmaiconą linię brzegową oraz czystą wodę. 
+			p.lead
+				|We wsi, nad jeziorem Lgińsko Duże znajdują się rozległe tereny do plażowania, strzeżone kąpielisko, 
+				|wypożyczalnia sprzętu wodnego, kioski i sklepy spożywczo-przemysłowe oraz punkty gastronomiczne. 
+		.col-xs-12.col-md-8
+			#map
+			img.img-responsive(src="images/jeziora.jpg", alt="Jeziora Lgińskie")
+block js
+	script(type="application/javascript", src="js/googlemaps.js")
+	script(type="application/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDufM9fL8AF8_gVzY5dyBhmNql7f35P-_g&callback=initMap" async defer)
